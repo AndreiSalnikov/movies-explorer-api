@@ -20,7 +20,7 @@ module.exports.createMovie = (req, res, next) => {
     });
 };
 
-module.exports.getMovies = (req, res, next) => Movie.find({}).populate(['owner']).sort({ createdAt: -1 })
+module.exports.getMovies = (req, res, next) => Movie.find({ owner: req.user._id }).populate(['owner'])
   .then((cards) => res.send(cards))
   .catch(next);
 
@@ -29,7 +29,7 @@ module.exports.deleteMovie = (req, res, next) => Movie.findById(req.params.movie
   if (card.owner._id.toString() !== req.user._id) {
     throw new Forbidden(WRONG_OWNER);
   }
-  return card.remove().then(res.send(card));
+  return card.remove().then(() => res.send(card));
 }).catch((err) => {
   if (err.name === 'CastError') { next(new BadRequest(WRONG_ID)); } else {
     next(err);

@@ -7,13 +7,14 @@ const FORBIDDEN = 403;
 
 const BAD_REQUEST_MESSAGE = 'Переданы некорректные данные';
 const NOT_FOUND_ID = 'Такого id нет в базе';
+const USER_NOT_FOUND = 'Пользователь не найден';
 const WRONG_OWNER = 'Вы не можете удалить чужую карточку';
 const WRONG_ID = 'Передан некорректный id';
 const NOT_FOUND_PAGE = 'Такой страницы не существует';
-const CONFLICT_ERROR_MESSAGE = 'Такой пользователь уже существует';
 const BAD_TOKEN_TYPE = 'Должен быть токен типа Bearer Token ';
 const WRONG_TOKEN = 'Неправильный токен';
-const INTERNAL_SERVER_ERROR_MESSAGE = '';
+const INTERNAL_SERVER_ERROR_MESSAGE = 'На сервере произошла ошибка';
+const EMAIL_IS_BUSY = 'Такой email уже занят';
 
 module.exports = {
   FORBIDDEN,
@@ -27,8 +28,9 @@ module.exports = {
   WRONG_OWNER,
   WRONG_ID,
   NOT_FOUND_PAGE,
-  CONFLICT_ERROR_MESSAGE,
   BAD_TOKEN_TYPE,
   WRONG_TOKEN,
   INTERNAL_SERVER_ERROR_MESSAGE,
+  USER_NOT_FOUND,
+  EMAIL_IS_BUSY,
 };

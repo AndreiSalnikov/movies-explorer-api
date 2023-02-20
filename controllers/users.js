@@ -7,13 +7,9 @@ const NotFound = require('../errors/NotFound');
 const ConflictError = require('../errors/ConflictError');
 
 const {
-  NOT_FOUND_ID, WRONG_ID, CONFLICT_ERROR_MESSAGE, BAD_REQUEST_MESSAGE,
+  NOT_FOUND_ID, WRONG_ID, BAD_REQUEST_MESSAGE, USER_NOT_FOUND,
+  EMAIL_IS_BUSY,
 } = require('../utils/constants');
-
-module.exports.getUsers = (req, res, next) => {
-  User.find({}).then((users) => res.send(users))
-    .catch(next);
-};
 
 module.exports.getMe = (req, res, next) => {
   const { _id } = req.user;
@@ -48,7 +44,7 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError(CONFLICT_ERROR_MESSAGE));
+        next(new ConflictError(EMAIL_IS_BUSY));
       } else if (err.name === 'ValidationError') {
         next(new BadRequest(BAD_REQUEST_MESSAGE));
       } else { next(err); }
@@ -61,10 +57,17 @@ module.exports.updateUser = (req, res, next) => {
     runValidators: true,
     upsert: false,
   })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (user === null) {
+        throw new NotFound(USER_NOT_FOUND);
+      }
+      res.send(user);
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest(BAD_REQUEST_MESSAGE));
+      } else if (err.code === 11000) {
+        next(new ConflictError(EMAIL_IS_BUSY));
       } else if (err.name === 'CastError') { next(new BadRequest(WRONG_ID)); } else {
         next(err);
       }
