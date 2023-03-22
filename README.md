@@ -6,7 +6,7 @@ REST API для аутентификации пользователей и со�
 
 **адрес домена сервера:**
 
-`https://api.moviessearch.nomoredomains.work`
+`https://moviessearch.nomoredomains.work`
 
 ## Схемы и модели ресурсов API
 
